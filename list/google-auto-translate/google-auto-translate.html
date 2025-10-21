@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>구글 자동번역</title>
+    <style>
+      /* 자동 번역 관련 - start */
+      .goog-te-banner-frame.skiptranslate,
+      iframe.VIpgJd-ZVi9od-ORHb-OEVmcd {
+        display: none !important;
+      }
+
+      body {
+        top: 0 !important;
+      }
+
+      .goog-logo-link {
+        display: none !important;
+      }
+
+      .goog-te-gadget span {
+        display: none !important;
+      }
+      #google_translate_element .goog-te-gadget {
+        font-size: 0; /* 기본 텍스트 숨기기 */
+        height: 26px !important;
+      }
+
+      #google_translate_element .goog-te-combo {
+        font-size: 14px; /* 드롭다운만 보이게 */
+      }
+
+      /* 구글 번역 select 숨기기 (국기 버튼으로 대체) */
+      #google_translate_element {
+        display: none !important;
+      }
+      /* 자동 번역 관련 - end */
+    </style>
+    <style>
+      /* 모달 스타일 */
+      .css-modal-overlay {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        z-index: 1000;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .css-modal-content {
+        background: white;
+        border-radius: 8px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        max-width: 500px;
+        width: 90%;
+        max-height: 80vh;
+        overflow-y: auto;
+      }
+
+      .css-modal-body {
+        padding: 20px;
+      }
+
+      .language-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+        gap: 15px;
+        margin-bottom: 20px;
+      }
+
+      .language-option {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 15px;
+        border: 2px solid #e5e7eb;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: all 0.2s ease;
+      }
+
+      .language-option:hover {
+        border-color: #3b82f6;
+        background-color: #f8fafc;
+      }
+
+      .language-option.selected {
+        border-color: #3b82f6;
+        background-color: #eff6ff;
+      }
+
+      .flag-container {
+        margin-bottom: 8px;
+      }
+
+      .flag-icon {
+        width: 40px;
+        height: 40px;
+        object-fit: cover;
+        border-radius: 4px;
+      }
+
+      .language-text {
+        font-size: 14px;
+        font-weight: 500;
+        text-align: center;
+        color: #374151;
+      }
+
+      .modal-actions {
+        display: flex;
+        justify-content: flex-end;
+        gap: 10px;
+        padding-top: 20px;
+        border-top: 1px solid #e5e7eb;
+      }
+
+      .cancel-btn,
+      .apply-btn {
+        padding: 8px 16px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 14px;
+        font-weight: 500;
+        transition: background-color 0.2s ease;
+      }
+
+      .cancel-btn {
+        background-color: #f3f4f6;
+        color: #374151;
+      }
+
+      .cancel-btn:hover {
+        background-color: #e5e7eb;
+      }
+
+      .apply-btn {
+        background-color: #3b82f6;
+        color: white;
+      }
+
+      .apply-btn:hover {
+        background-color: #2563eb;
+      }
+    </style>
+    <!-- 구글 자동번역 -->
+    <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+    <!-- 테일윈드 -->
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+  <body>
+    <!-- 언어 선택 -->
+    <div class="relative" id="google_translate_element"></div>
+    <!-- 국기 버튼 (구글 번역 대체) -->
+    <div class="relative">
+      <button
+        onclick="openLanguageModal()"
+        class="flex items-center space-x-2 text-gray-800 text-sm border border-white rounded px-2 py-1 transition-colors"
+      >
+        <img
+          id="currentFlag"
+          src="./flag/south-korea.png"
+          alt="현재 언어"
+          class="w-10 h-10 object-cover rounded"
+        />
+        <span id="currentLangText" class="hidden">한국어</span>
+      </button>
+    </div>
+
+    <article>
+      <h1>번역할 내용</h1>
+      <p>
+        '왕좌의 게임'은 좋은 작품을 내는 것으로 명성이 자자한 미국 케이블TV
+        HBO의 대표 시리즈물 중 하나다. 매력적인 인물과 예측할 수 없는 스토리
+        덕택에 한때 명작으로 손꼽혔다. 탁월한 능력을 지닌 주인공 후보군이 속속
+        등장하는데, 이들은 드라마가 시작한 지 몇 회가 지나지 않아 싸늘한
+        주검으로 변한다. 연출자는 너무도 단호하게 이들의 숨통을 끊어놓는다.
+        어떻게 흐를지 알 수 없는 이야기에 휘말리다 보면 1시간이 마치 5분처럼
+        흘러간다. 서로 다른 인물들의 욕망과 철학과 트라우마가 어우러진 플롯,
+        주요 캐릭터가 한명씩 제거되어 가는 '토너먼트 구조'가 유기적으로
+        맞물리면서 '왕좌의 게임'은 시청자들의 잠을 앗아가는 것으로 '악명'이 높은
+        시리즈물의 '왕좌'가 됐다.
+      </p>
+    </article>
+
+    <div
+      id="languageModal"
+      class="css-modal-overlay"
+      onclick="closeLanguageModal()"
+    >
+      <div class="css-modal-content" onclick="event.stopPropagation();">
+        <div class="css-modal-body">
+          <div class="language-grid">
+            <div class="language-option" data-lang="ko">
+              <div class="flag-container">
+                <img
+                  src="./flag/south-korea.png"
+                  alt="한국어"
+                  class="flag-icon"
+                />
+              </div>
+              <span class="language-text">한국어</span>
+            </div>
+            <div class="language-option" data-lang="en">
+              <div class="flag-container">
+                <img
+                  src="./flag/united-states-of-america.png"
+                  alt="English"
+                  class="flag-icon"
+                />
+              </div>
+              <span class="language-text">English</span>
+            </div>
+            <div class="language-option" data-lang="ja">
+              <div class="flag-container">
+                <img src="./flag/japan.png" alt="日本語" class="flag-icon" />
+              </div>
+              <span class="language-text">日本語</span>
+            </div>
+            <div class="language-option" data-lang="zh-CN">
+              <div class="flag-container">
+                <img src="./flag/china.png" alt="中文" class="flag-icon" />
+              </div>
+              <span class="language-text">中文</span>
+            </div>
+            <div class="language-option" data-lang="es">
+              <div class="flag-container">
+                <img src="./flag/spain.png" alt="Español" class="flag-icon" />
+              </div>
+              <span class="language-text">Español</span>
+            </div>
+            <div class="language-option" data-lang="fr">
+              <div class="flag-container">
+                <img src="./flag/france.png" alt="Français" class="flag-icon" />
+              </div>
+              <span class="language-text">Français</span>
+            </div>
+          </div>
+          <div class="modal-actions">
+            <button class="cancel-btn" onclick="closeLanguageModal()">
+              취소
+            </button>
+            <button class="apply-btn" onclick="applyLanguageChange()">
+              적용
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script>
+      // 반드시 구글번역 CDN의 cb= 값과 함수명 맞춰야함!
+      function googleTranslateElementInit() {
+        new google.translate.TranslateElement(
+          {
+            pageLanguage: "ko", // 원본 언어는 한국어
+            includedLanguages: "ko,en,ja,zh-CN,fr,de,es", // 한국어도 포함 (되돌리기 용도)
+            autoDisplay: false,
+          },
+          "google_translate_element"
+        );
+      }
+
+      // 현재 선택된 언어 상태 관리
+      let currentLanguage = "ko";
+      let selectedLanguage = "ko"; // 모달에서 선택된 언어 (임시)
+      const languageFlags = {
+        ko: "./flag/south-korea.png",
+        en: "./flag/united-states-of-america.png",
+        ja: "./flag/japan.png",
+        "zh-CN": "./flag/china.png",
+        es: "./flag/spain.png",
+        fr: "./flag/france.png",
+      };
+      const languageTexts = {
+        ko: "한국어",
+        en: "English",
+        ja: "日本語",
+        "zh-CN": "中文",
+        es: "Español",
+        fr: "Français",
+      };
+
+      // 세션 스토리지에서 언어 코드 저장/불러오기
+      function saveLanguageToSession(lang) {
+        sessionStorage.setItem("selectedLanguage", lang);
+      }
+
+      function getLanguageFromSession() {
+        const savedLang = sessionStorage.getItem("selectedLanguage");
+        return savedLang || "ko";
+      }
+
+      // 현재 언어 UI 업데이트
+      function updateCurrentLanguageUI() {
+        const currentFlag = document.getElementById("currentFlag");
+
+        if (currentFlag && languageFlags[currentLanguage]) {
+          currentFlag.src = languageFlags[currentLanguage];
+        } else {
+          console.log("[updateCurrentLanguageUI] 국기 이미지 업데이트 실패");
+        }
+      }
+
+      // 언어 선택 모달 열기
+      function openLanguageModal() {
+        const modal = document.getElementById("languageModal");
+        if (modal) {
+          selectedLanguage = currentLanguage; // 현재 언어로 초기화
+          modal.style.display = "flex";
+          updateLanguageOptions();
+        }
+      }
+
+      // 언어 선택 모달 닫기
+      function closeLanguageModal() {
+        const modal = document.getElementById("languageModal");
+        if (modal) {
+          modal.style.display = "none";
+        }
+      }
+
+      // 언어 옵션 업데이트 (현재 선택된 언어 표시)
+      function updateLanguageOptions() {
+        const options = document.querySelectorAll(".language-option");
+        options.forEach((option) => {
+          const lang = option.getAttribute("data-lang");
+          if (lang === selectedLanguage) {
+            option.classList.add("selected");
+          } else {
+            option.classList.remove("selected");
+          }
+        });
+      }
+
+      // 언어 선택 (임시 선택)
+      function selectLanguage(targetLang) {
+        selectedLanguage = targetLang;
+        updateLanguageOptions();
+      }
+
+      // 언어 변경 적용
+      function applyLanguageChange() {
+        if (selectedLanguage === currentLanguage) {
+          closeLanguageModal();
+          return;
+        }
+
+        currentLanguage = selectedLanguage;
+
+        // 세션 스토리지에 저장
+        saveLanguageToSession(currentLanguage);
+
+        // UI 업데이트
+        updateCurrentLanguageUI();
+
+        // 구글 번역 실행
+        if (typeof google !== "undefined" && google.translate) {
+          const select = document.querySelector(".goog-te-combo");
+          if (select) {
+            select.value = currentLanguage;
+            select.dispatchEvent(new Event("change"));
+          }
+        }
+
+        closeLanguageModal();
+      }
+
+      // 페이지 로드시 구글 번역 강제 실행
+      window.addEventListener("load", function () {
+        // 세션 스토리지에서 언어 복원
+        currentLanguage = getLanguageFromSession();
+
+        // UI 업데이트
+        updateCurrentLanguageUI();
+
+        if (typeof google !== "undefined" && google.translate) {
+          googleTranslateElementInit();
+
+          // 구글 번역 초기화 후 언어 적용
+          setTimeout(() => {
+            const select = document.querySelector(".goog-te-combo");
+            if (select && currentLanguage !== "ko") {
+              select.value = currentLanguage;
+              select.dispatchEvent(new Event("change"));
+            }
+          }, 1000);
+        }
+      });
+
+      // 뒤로가기 시 구글 번역 강제 실행
+      window.addEventListener("popstate", function () {
+        setTimeout(() => {
+          if (typeof google !== "undefined" && google.translate) {
+            googleTranslateElementInit();
+          }
+        }, 200);
+      });
+
+      // 구글자동 번역용 뒤로가기 후 캐시 새로고침 (안하면 번역ui 안보임)
+      window.addEventListener("pageshow", function (event) {
+        if (event.persisted) {
+          // bfcache(뒤로가기 캐시)에서 불린 경우
+          console.log("(뒤로가기 캐시)에서 불린 경우");
+          location.reload();
+        }
+      });
+
+      // 언어 옵션 클릭 이벤트 등록
+      document.addEventListener("DOMContentLoaded", function () {
+        // 언어 옵션 클릭 이벤트
+        const languageOptions = document.querySelectorAll(".language-option");
+        languageOptions.forEach((option) => {
+          option.addEventListener("click", function () {
+            const targetLang = this.getAttribute("data-lang");
+            selectLanguage(targetLang);
+          });
+        });
+
+        // 구글 번역 select 감지 및 이벤트 처리
+        const observer = new MutationObserver(() => {
+          const select = document.querySelector(".goog-te-combo");
+          if (select) {
+            select.addEventListener("change", function () {
+              console.log("구글 자동번역 실행");
+              if (this.value === "ko") {
+                // ✅ 한국어 선택 시 번역 해제 → 페이지 새로고침
+                window.location.reload();
+              } else {
+                // 다른 언어 선택 시 현재 언어 상태 업데이트
+                currentLanguage = this.value;
+                saveLanguageToSession(currentLanguage);
+                updateCurrentLanguageUI();
+              }
+            });
+            observer.disconnect();
+          }
+        });
+        observer.observe(document.body, { childList: true, subtree: true });
+      });
+    </script>
+  </body>
+</html>
