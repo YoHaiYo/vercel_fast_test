@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <title>연속 인식 안정화 버전</title>
+    <style>
+      body {
+        font-family: sans-serif;
+        text-align: center;
+        margin-top: 40px;
+      }
+      #result {
+        margin-top: 20px;
+        background: #f8f8f8;
+        padding: 15px;
+        width: 80%;
+        margin-inline: auto;
+        border-radius: 10px;
+      }
+    </style>
+  </head>
+  <body>
+    <h2>🎙️ 완전 연속 인식 (자동 재시작 루프)</h2>
+    <button id="startBtn">시작</button>
+    <button id="stopBtn">정지</button>
+    <div id="result">대기 중...</div>
+
+    <script>
+      window.SpeechRecognition =
+        window.SpeechRecognition || window.webkitSpeechRecognition;
+      if (!window.SpeechRecognition) {
+        alert("이 브라우저는 SpeechRecognition API를 지원하지 않습니다.");
+      }
+
+      const recognition = new SpeechRecognition();
+      recognition.lang = "ko-KR";
+      recognition.continuous = true; // 여러 문장 인식 가능
+      recognition.interimResults = true; // 중간 결과 실시간 표시
+
+      const resultDiv = document.getElementById("result");
+      let finalText = "";
+      let recognizing = false;
+      let autoRestart = false;
+
+      recognition.onstart = () => {
+        recognizing = true;
+        console.log("🎤 인식 시작됨");
+      };
+
+      recognition.onresult = (event) => {
+        let interim = "";
+        for (let i = event.resultIndex; i < event.results.length; ++i) {
+          const text = event.results[i][0].transcript;
+          if (event.results[i].isFinal) {
+            finalText += text + " ";
+            console.log("✅ 최종 결과:", text);
+          } else {
+            interim += text;
+          }
+        }
+        resultDiv.innerHTML = `
+        <strong>최종:</strong> ${finalText}<br>
+        <span style="color:gray;">중간: ${interim}</span>
+      `;
+      };
+
+      recognition.onspeechend = () => {
+        console.log("🤫 말소리 중단 (자동 재시작 대기 중)");
+        recognizing = false;
+      };
+
+      recognition.onend = () => {
+        console.log("🏁 세션 종료됨");
+        recognizing = false;
+        if (autoRestart) {
+          // 🔁 약간의 지연을 두고 자동 재시작
+          setTimeout(() => {
+            console.log("⏩ 자동 재시작 실행");
+            recognition.start();
+          }, 300);
+        }
+      };
+
+      recognition.onerror = (e) => {
+        console.warn("⚠️ 에러 발생:", e.error);
+        // 네트워크나 권한 문제는 재시작하지 않음
+        if (e.error === "not-allowed" || e.error === "network") {
+          autoRestart = false;
+        }
+      };
+
+      // 버튼 이벤트
+      document.getElementById("startBtn").onclick = () => {
+        autoRestart = true;
+        finalText = "";
+        recognition.start();
+        console.log("▶️ 수동 시작");
+      };
+
+      document.getElementById("stopBtn").onclick = () => {
+        autoRestart = false; // 자동 루프 중지
+        recognition.stop();
+        console.log("⏹ 정지 요청됨");
+      };
+    </script>
+  </body>
+</html>

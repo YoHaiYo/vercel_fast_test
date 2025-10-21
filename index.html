@@ -23,25 +23,15 @@
     </style>
   </head>
   <body>
-    <h1>커스텀 스킴 테스트</h1>
-    <label for="code">company_order_code 입력:</label><br />
-    <input type="text" id="code" value="O20250814-00001" />
-    <button onclick="updateLink()">링크 생성</button>
-
-    <a id="deepLink" href="myapp://signup?company_order_code=O20250814-00001">
-      앱 열기
-    </a>
-
-    <script>
-      function updateLink() {
-        const code = document.getElementById("code").value.trim();
-        const link = `myapp://signup?company_order_code=${encodeURIComponent(
-          code
-        )}`;
-        const aTag = document.getElementById("deepLink");
-        aTag.href = link;
-        aTag.textContent = `앱 열기 (${code})`;
-      }
-    </script>
+    <ul>
+      <li>
+        <a href="./list/custom-scheme.html">커스텀 스킴 테스트</a>
+      </li>
+      <li>
+        <a href="./list/web-speech-loop.html"
+          >Web Speech API 무한루프 음성인식</a
+        >
+      </li>
+    </ul>
   </body>
 </html>
