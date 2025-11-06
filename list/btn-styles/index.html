@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>애니메이션 버튼 모음</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1e1e2e 0%, #2d2d44 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 20px;
+            color: #fff;
+        }
+
+        h1 {
+            margin-bottom: 50px;
+            font-size: 2.5em;
+            text-align: center;
+            background: linear-gradient(45deg, #ff6b6b, #4ecdc4, #45b7d1, #f9ca24);
+            background-size: 300% 300%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: gradientShift 3s ease infinite;
+        }
+
+        @keyframes gradientShift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        .button-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 40px;
+            max-width: 1200px;
+            width: 100%;
+        }
+
+        .button-wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .button-label {
+            font-size: 0.9em;
+            color: #a0a0a0;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        /* Base button styles */
+        button {
+            padding: 15px 40px;
+            font-size: 16px;
+            font-weight: 600;
+            color: #fff;
+            background: #2a2a3e;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.2s;
+            min-width: 200px;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        /* Effect 1: 무지개 테두리 회전 */
+        .effect-1 {
+            border: 3px solid transparent;
+            background-clip: padding-box;
+        }
+
+        .effect-1::before {
+            content: '';
+            position: absolute;
+            top: -3px;
+            left: -3px;
+            right: -3px;
+            bottom: -3px;
+            background: linear-gradient(45deg, #ff6b6b, #feca57, #48dbfb, #ff9ff3, #54a0ff, #ff6b6b);
+            background-size: 400% 400%;
+            border-radius: 8px;
+            z-index: -1;
+            animation: rainbowBorder 3s linear infinite;
+        }
+
+        @keyframes rainbowBorder {
+            0% { background-position: 0% 50%; }
+            100% { background-position: 400% 50%; }
+        }
+
+        /* Effect 2: 네온 글로우 */
+        .effect-2 {
+            border: 2px solid #00ffff;
+            box-shadow: 
+                0 0 10px #00ffff,
+                0 0 20px #00ffff,
+                0 0 30px #00ffff,
+                inset 0 0 10px rgba(0, 255, 255, 0.1);
+            animation: neonPulse 2s ease-in-out infinite;
+        }
+
+        @keyframes neonPulse {
+            0%, 100% {
+                box-shadow: 
+                    0 0 10px #00ffff,
+                    0 0 20px #00ffff,
+                    0 0 30px #00ffff,
+                    inset 0 0 10px rgba(0, 255, 255, 0.1);
+            }
+            50% {
+                box-shadow: 
+                    0 0 20px #00ffff,
+                    0 0 40px #00ffff,
+                    0 0 60px #00ffff,
+                    inset 0 0 20px rgba(0, 255, 255, 0.2);
+            }
+        }
+
+        /* Effect 3: 그라데이션 테두리 움직임 */
+        .effect-3 {
+            border: 3px solid transparent;
+            background: linear-gradient(#2a2a3e, #2a2a3e) padding-box,
+                        linear-gradient(90deg, #ff6b6b, #4ecdc4, #45b7d1, #f9ca24, #ff6b6b) border-box;
+            background-size: 200% 200%;
+            animation: gradientMove 3s linear infinite;
+        }
+
+        @keyframes gradientMove {
+            0% { background-position: 0% 50%; }
+            100% { background-position: 200% 50%; }
+        }
+
+        /* Effect 4: 점선 테두리 회전 */
+        .effect-4 {
+            border: 3px dashed transparent;
+            background-clip: padding-box;
+        }
+
+        .effect-4::before {
+            content: '';
+            position: absolute;
+            top: -3px;
+            left: -3px;
+            right: -3px;
+            bottom: -3px;
+            border: 3px dashed;
+            border-image: linear-gradient(45deg, #ff6b6b, #4ecdc4, #45b7d1, #f9ca24) 1;
+            border-radius: 8px;
+            z-index: -1;
+            animation: rotateBorder 4s linear infinite;
+        }
+
+        @keyframes rotateBorder {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Effect 5: 더블 테두리 펄스 */
+        .effect-5 {
+            border: 2px solid #ff6b6b;
+            position: relative;
+        }
+
+        .effect-5::before {
+            content: '';
+            position: absolute;
+            top: -6px;
+            left: -6px;
+            right: -6px;
+            bottom: -6px;
+            border: 2px solid #4ecdc4;
+            border-radius: 8px;
+            z-index: -1;
+            animation: pulseDouble 2s ease-in-out infinite;
+        }
+
+        @keyframes pulseDouble {
+            0%, 100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+            50% {
+                opacity: 0.5;
+                transform: scale(1.1);
+            }
+        }
+
+        /* Effect 6: 스파클 테두리 */
+        .effect-6 {
+            border: 2px solid transparent;
+            background-clip: padding-box;
+        }
+
+        .effect-6::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(45deg, 
+                #ff6b6b 0%, #ff6b6b 25%,
+                transparent 25%, transparent 50%,
+                #4ecdc4 50%, #4ecdc4 75%,
+                transparent 75%, transparent 100%);
+            background-size: 20px 20px;
+            border-radius: 8px;
+            z-index: -1;
+            animation: sparkleMove 1s linear infinite;
+        }
+
+        @keyframes sparkleMove {
+            0% { background-position: 0 0; }
+            100% { background-position: 20px 20px; }
+        }
+
+        /* Effect 7: 빛나는 테두리 */
+        .effect-7 {
+            border: 3px solid transparent;
+            background-clip: padding-box;
+        }
+
+        .effect-7::after {
+            content: '';
+            position: absolute;
+            top: -3px;
+            left: -3px;
+            right: -3px;
+            bottom: -3px;
+            background: linear-gradient(135deg, 
+                transparent 30%, 
+                rgba(255, 107, 107, 0.8) 50%, 
+                transparent 70%);
+            border-radius: 8px;
+            z-index: -1;
+            animation: shineBorder 2s linear infinite;
+        }
+
+        @keyframes shineBorder {
+            0% { transform: translateX(-100%) translateY(-100%); }
+            100% { transform: translateX(100%) translateY(100%); }
+        }
+
+        /* Effect 8: 파도 테두리 */
+        .effect-8 {
+            border: 3px solid transparent;
+            background-clip: padding-box;
+        }
+
+        .effect-8::before {
+            content: '';
+            position: absolute;
+            top: -3px;
+            left: -3px;
+            right: -3px;
+            bottom: -3px;
+            background: conic-gradient(from 0deg, 
+                #ff6b6b, #feca57, #48dbfb, #ff9ff3, 
+                #54a0ff, #5f27cd, #ff6b6b);
+            border-radius: 8px;
+            z-index: -1;
+            animation: conicRotate 3s linear infinite;
+        }
+
+        @keyframes conicRotate {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <h1>✨ 애니메이션 버튼 모음 ✨</h1>
+    
+    <div class="button-container">
+        <div class="button-wrapper">
+            <span class="button-label">Effect 1</span>
+            <button class="effect-1">무지개 테두리</button>
+        </div>
+
+        <div class="button-wrapper">
+            <span class="button-label">Effect 2</span>
+            <button class="effect-2">네온 글로우</button>
+        </div>
+
+        <div class="button-wrapper">
+            <span class="button-label">Effect 3</span>
+            <button class="effect-3">그라데이션 움직임</button>
+        </div>
+
+        <div class="button-wrapper">
+            <span class="button-label">Effect 4</span>
+            <button class="effect-4">점선 회전</button>
+        </div>
+
+        <div class="button-wrapper">
+            <span class="button-label">Effect 5</span>
+            <button class="effect-5">더블 펄스</button>
+        </div>
+
+        <div class="button-wrapper">
+            <span class="button-label">Effect 6</span>
+            <button class="effect-6">스파클 테두리</button>
+        </div>
+
+        <div class="button-wrapper">
+            <span class="button-label">Effect 7</span>
+            <button class="effect-7">빛나는 테두리</button>
+        </div>
+
+        <div class="button-wrapper">
+            <span class="button-label">Effect 8</span>
+            <button class="effect-8">원뿔 그라데이션</button>
+        </div>
+    </div>
+</body>
+</html>
