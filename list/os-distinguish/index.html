@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Device & Browser Detection</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        padding: 2rem;
+      }
+      .info {
+        margin-bottom: 1rem;
+      }
+      .label {
+        font-weight: bold;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Device & Browser Detection</h1>
+    <div class="info">
+      <span class="label">Device:</span> <span id="device">Detecting...</span>
+    </div>
+    <div class="info">
+      <span class="label">Browser:</span> <span id="browser">Detecting...</span>
+    </div>
+
+    <script>
+      const ua = navigator.userAgent.toLowerCase();
+      let device = "Unknown";
+
+      if (/android/.test(ua)) {
+        device = "Android";
+      } else if (/iphone|ipad/.test(ua)) {
+        device = "iPhone";
+      } else if (/windows nt/.test(ua)) {
+        device = "Windows PC";
+      } else if (/macintosh/.test(ua)) {
+        device = "Mac PC";
+      }
+
+      let browser = "Unknown";
+      if (/chrome/.test(ua) && !/edg/.test(ua)) {
+        browser = "Chrome";
+      } else if (/safari/.test(ua) && !/chrome/.test(ua)) {
+        browser = "Safari";
+      } else if (/firefox/.test(ua)) {
+        browser = "Firefox";
+      } else if (/edg/.test(ua)) {
+        browser = "Edge";
+      } else if (/opr|opera/.test(ua)) {
+        browser = "Opera";
+      }
+
+      document.getElementById("device").textContent = device;
+      document.getElementById("browser").textContent = browser;
+    </script>
+  </body>
+</html>
