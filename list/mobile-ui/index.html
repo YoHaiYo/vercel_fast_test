@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, viewport-fit=cover"
+    />
+    <title>Flex Mobile Layout</title>
+
+    <style>
+      html,
+      body {
+        margin: 0;
+        padding: 0;
+        height: 100%;
+      }
+
+      /* 전체 앱 래퍼 */
+      .app {
+        display: flex;
+        flex-direction: column;
+
+        height: 100vh; /* fallback */
+        height: 100dvh; /* 최신 브라우저 대응 */
+
+        background: #f5f5f5;
+      }
+
+      /* 헤더 */
+      header {
+        flex-shrink: 0;
+        height: 56px;
+
+        padding-top: env(safe-area-inset-top);
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        background: white;
+        border-bottom: 1px solid #ddd;
+        font-weight: bold;
+      }
+
+      /* 메인 컨텐츠 (여기만 스크롤) */
+      main {
+        flex: 1;
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
+
+        padding: 16px;
+        box-sizing: border-box;
+      }
+
+      /* 바텀 네비 */
+      footer {
+        flex-shrink: 0;
+        height: 60px;
+
+        padding-bottom: env(safe-area-inset-bottom);
+
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+
+        background: white;
+        border-top: 1px solid #ddd;
+      }
+
+      .nav-item {
+        text-align: center;
+        font-size: 14px;
+      }
+
+      /* 테스트용 컨텐츠 */
+      .card {
+        background: white;
+        padding: 16px;
+        margin-bottom: 12px;
+        border-radius: 8px;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="app">
+      <header>상단 헤더</header>
+
+      <main>
+        <div class="card">컨텐츠 1</div>
+        <div class="card">컨텐츠 2</div>
+        <div class="card">컨텐츠 3</div>
+        <div class="card">컨텐츠 4</div>
+        <div class="card">컨텐츠 5</div>
+        <div class="card">컨텐츠 6</div>
+        <div class="card">컨텐츠 7</div>
+        <div class="card">컨텐츠 8</div>
+        <div class="card">컨텐츠 9</div>
+        <div class="card">컨텐츠 10</div>
+      </main>
+
+      <footer>
+        <div class="nav-item">홈</div>
+        <div class="nav-item">검색</div>
+        <div class="nav-item">마이</div>
+      </footer>
+    </div>
+  </body>
+</html>
